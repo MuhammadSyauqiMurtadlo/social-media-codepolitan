@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Validator;
 
 class PostsController extends Controller
 {
@@ -16,14 +17,32 @@ class PostsController extends Controller
         ]);
     }
 
-    public function show($id)
-    {
-        // Logic to retrieve a post by ID
-    }
+    public function show($id) {}
 
     public function store(Request $request)
     {
-        // Logic to store a new post
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'content' => 'required|string|max:255',
+            'image_url' => 'nullable',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+            ], 400);
+        }
+        // if validation is passed
+        $post = Post::create([
+            'user_id' => $request->user_id,
+            'content' => $request->content,
+            'image_url' => $request->image_url,
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Post created successfully',
+            'data' => $post,
+        ], 200);
     }
 
     public function update(Request $request, $id)
