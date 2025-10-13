@@ -17,7 +17,15 @@ class PostsController extends Controller
         ]);
     }
 
-    public function show($id) {}
+    public function show($id)
+    {
+        $post = Post::find($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $post,
+        ]);
+    }
 
     public function store(Request $request)
     {
