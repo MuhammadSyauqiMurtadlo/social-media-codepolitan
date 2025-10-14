@@ -55,11 +55,52 @@ class PostsController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Logic to update a post by ID
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string|max:255',
+            'image_url' => 'nullable',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+            ], 400);
+        }
+
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Post not found',
+            ], 404);
+        }
+
+        // if validation is passed
+        $post->content = $request->content;
+        $post->image_url = $request->image_url;
+        $post->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post updated successfully',
+            'data' => $post,
+        ], 200);
     }
 
     public function destroy($id)
     {
-        // Logic to delete a post by ID
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Post not found',
+            ], 404);
+        }
+
+        $post->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post deleted successfully',
+        ], 200);
     }
 }
