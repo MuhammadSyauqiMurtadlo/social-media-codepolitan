@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
-use App\Http\Controllers\StoreController;
+use App\Http\Controllers\CommentsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,5 +17,11 @@ Route::prefix('v1')->group(function () {
         Route::get('{id}', [\App\Http\Controllers\PostsController::class, 'show']); //mengambil data pesan berdasarkan ID
         Route::put('{id}', [\App\Http\Controllers\PostsController::class, 'update']); //mengupdate data pesan berdasarkan ID
         Route::delete('{id}', [\App\Http\Controllers\PostsController::class, 'destroy']); //menghapus data pesan berdasarkan ID
+    });
+
+    // Route untuk menghandle comments
+    Route::prefix('comments')->group(function () {
+        Route::post('/', [\App\Http\Controllers\CommentsController::class, 'store']); //mengambil semua data komentar
+        Route::delete('{id}', [\App\Http\Controllers\CommentsController::class, 'destroy']); //menghapus data komentar berdasarkan ID
     });
 });

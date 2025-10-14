@@ -14,7 +14,7 @@ class PostsController extends Controller
         return response()->json([
             'success' => true,
             'data' => $posts,
-        ]);
+        ], 200, [], JSON_PRETTY_PRINT);
     }
 
     public function show($id)
