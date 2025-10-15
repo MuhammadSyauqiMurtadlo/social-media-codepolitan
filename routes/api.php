@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\LikesController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,5 +24,11 @@ Route::prefix('v1')->group(function () {
     Route::prefix('comments')->group(function () {
         Route::post('/', [\App\Http\Controllers\CommentsController::class, 'store']); //mengambil semua data komentar
         Route::delete('{id}', [\App\Http\Controllers\CommentsController::class, 'destroy']); //menghapus data komentar berdasarkan ID
+    });
+
+    // Route untuk menghandle likes
+    Route::prefix('likes')->group(function () {
+        Route::post('/', [\App\Http\Controllers\LikesController::class, 'store']); //menyimpan data like
+        Route::delete('{id}', [\App\Http\Controllers\LikesController::class, 'destroy']); //menghapus data like berdasarkan ID
     });
 });
