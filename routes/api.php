@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\LikesController;
+use App\Http\Controllers\MessagesController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -30,5 +31,14 @@ Route::prefix('v1')->group(function () {
     Route::prefix('likes')->group(function () {
         Route::post('/', [\App\Http\Controllers\LikesController::class, 'store']); //menyimpan data like
         Route::delete('{id}', [\App\Http\Controllers\LikesController::class, 'destroy']); //menghapus data like berdasarkan ID
+    });
+
+    // Route untuk menghandle messages
+    Route::prefix('messages')->group(function () {
+        Route::get('/', [MessagesController::class, 'index']); //mengambil semua data pesan
+        Route::post('/', [MessagesController::class, 'store']); //menyimpan data pesan
+        Route::get('{id}', [MessagesController::class, 'show']); //mengambil data pesan berdasarkan ID
+        Route::put('{id}', [MessagesController::class, 'update']); //mengupdate data pesan berdasarkan ID
+        Route::delete('{id}', [MessagesController::class, 'destroy']); //menghapus data pesan berdasarkan ID
     });
 });
