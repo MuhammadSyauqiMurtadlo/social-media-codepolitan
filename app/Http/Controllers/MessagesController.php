@@ -62,6 +62,19 @@ class MessagesController extends Controller
         }
     }
 
+    public function getMessagesByUserId($user_id)
+    {
+        $messages = Message::where('sender_id', $user_id)
+            ->orWhere('receiver_id', $user_id)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Messages for user_id: ' . $user_id,
+            'data' => $messages,
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
+
     public function destroy($id)
     {
         $message = Message::find($id);

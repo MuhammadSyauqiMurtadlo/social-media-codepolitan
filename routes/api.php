@@ -38,6 +38,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/', [MessagesController::class, 'index']); //mengambil semua data pesan
         Route::post('/', [MessagesController::class, 'store']); //menyimpan data pesan
         Route::get('{id}', [MessagesController::class, 'show']); //mengambil data pesan berdasarkan ID
+        Route::get('user/{user_id}', [MessagesController::class, 'getMessagesByUserId']); //mengambil data pesan berdasarkan user_id
         Route::put('{id}', [MessagesController::class, 'update']); //mengupdate data pesan berdasarkan ID
         Route::delete('{id}', [MessagesController::class, 'destroy']); //menghapus data pesan berdasarkan ID
     });
