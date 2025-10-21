@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Like;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class LikesController extends Controller
 {
     public function store(Request $request)
     {
+        $user = JWTAuth::parseToken()->authenticate();
+
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|integer',
             'post_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
@@ -21,7 +24,7 @@ class LikesController extends Controller
             ], 400);
         } else {
             $like = Like::create([
-                'user_id' => $request->user_id,
+                'user_id' => $user->id,
                 'post_id' => $request->post_id,
             ]);
 
